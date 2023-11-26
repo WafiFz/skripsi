@@ -1,39 +1,48 @@
-# -*- encoding: utf-8 -*-
-"""
-Copyright (c) 2019 - present AppSeed.us
-"""
-
 from apps.home import blueprint
 from flask import jsonify, render_template, request
 from flask_login import login_required
 from jinja2 import TemplateNotFound
 import fitz
 from io import BytesIO
+import torch
+from transformers import BertTokenizer
+from .BERTClass import predict_category
 
-
-@blueprint.route('/index')
+@blueprint.route('/')
 def index():
 
     return render_template('home/index.html', segment='index')
 
-@blueprint.route('/index', methods=['POST'])
+@blueprint.route('/', methods=['POST'])
 def index_post():
-    file = request.files['file']
-
-    # Check if the file has a PDF extension
-    if not file.filename.lower().endswith('.pdf'):
-        return jsonify({'success': False, 'output': 'Invalid file format. Please upload a PDF file.'}), 400
-
-    # Read the PDF file and convert it to a string
     try:
+        file = request.files['file']
+
+        # Check if the file is present
+        if 'file' not in request.files or file.filename == '':
+            raise ValueError('No file uploaded.')
+
+        # Check if the file has a PDF extension
+        if not file.filename.lower().endswith('.pdf'):
+            raise ValueError('Invalid file format. Please upload a PDF file.')
+        
+        # Read the PDF file and convert it to a string
         text = request_pdf_to_string(file)
 
-        # Lakukan sesuatu dengan text_content, misalnya, print atau kirim sebagai tanggapan
-        print(text)
+        # Check if the file content is empty
+        if not text.strip():
+            raise ValueError('Empty file content. Please upload a non-empty PDF file.')
 
-        return jsonify({'success': True, 'output': text}), 400
+        # Predict
+        success, output, probability = predict_category(text)
+        
+        if not success:
+            raise ValueError(output)
+        
+        return jsonify({'success': True, 'output': output})
+        # return jsonify({'success': True, 'output': f'Hasil:  {str(output)}\n Probabilitas:  {str(probability)}'})
     except Exception as e:
-        return jsonify({'success': False, 'output': f'Error processing PDF: {str(e)}'}), 500
+        return jsonify({'success': False, 'output': str(e)}), 500
 
 def pdf_to_string(file):
     # Gunakan PyMuPDF untuk membaca teks dari PDF
