@@ -7,6 +7,7 @@ from io import BytesIO
 import torch
 from transformers import BertTokenizer
 from .BERTClass import predict_category
+from .IndoBERTClass import indo_predict_category
 
 @blueprint.route('/')
 def index():
@@ -34,7 +35,7 @@ def index_post():
             raise ValueError('Empty file content. Please upload a non-empty PDF file.')
 
         # Predict
-        success, output, probability = predict_category(text)
+        success, output, probability = indo_predict_category(text)
         
         if not success:
             raise ValueError(output)

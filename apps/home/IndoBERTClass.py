@@ -5,37 +5,37 @@ from transformers import BertTokenizer
 import numpy as np
 
 class_labels = [
-    'Accountant', 
-    'Advocate', 
-    'Agriculture', 
-    'Apparel', 
-    'Arts', 
-    'Automobile', 
-    'Aviation', 
-    'Banking', 
-    'BPO (Business Process Outsourcing)', 
-    'Business-development', 
-    'Chef', 
-    'Construction', 
-    'Consultant', 
-    'Designer', 
-    'Digital-media', 
+    'Akuntan', 
+    'Advokat', 
+    'Pertanian', 
+    'Pakaian', 
+    'Seni', 
+    'Otomotif', 
+    'Penerbangan', 
+    'Perbankan', 
+    'BPO (Bisnis Proses Outsourcing)', 
+    'Pengembangan Bisnis', 
+    'Koki', 
+    'Konstruksi', 
+    'Konsultan', 
+    'Desainer', 
+    'Media Digital', 
     'Engineering', 
-    'Finance', 
-    'Fitness',
-    'Healthcare', 
-    'Hr', 
-    'Information-technology', 
-    'Public-relations', 
+    'Keuangan', 
+    'Kebugaran', 
+    'Perawatan Kesehatan', 
+    'SDM (Sumber Daya Manusia)', 
+    'Teknologi Informasi', 
+    'Hubungan Masyarakat', 
     'Sales', 
-    'Teacher'
-    ]
-BERT = 'bert-base-uncased'
-PRE_TRAINED_MODEL = BERT
+    'Guru']
 
-class BERTClass(torch.nn.Module):
+IndoBERT = 'indolem/indobert-base-uncased'
+PRE_TRAINED_MODEL = IndoBERT
+
+class IndoBERTClass(torch.nn.Module):
     def __init__(self):
-        super(BERTClass, self).__init__()
+        super(IndoBERTClass, self).__init__()
         self.l1 = transformers.BertModel.from_pretrained(PRE_TRAINED_MODEL)
         self.l2 = torch.nn.Dropout(0.3)
         self.l3 = torch.nn.Linear(768, 24)
@@ -47,10 +47,10 @@ class BERTClass(torch.nn.Module):
         return output
 
 # Load the trained model
-model = BERTClass()
+model = IndoBERTClass()
 
 # Path to file model
-model_path = "trained_model/cv_model_v4.pth"
+model_path = "trained_model/cv_indo_model_v3.pth"
 
 # Check is CUDA available
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -62,7 +62,7 @@ model.eval()
 # Load the tokenizer
 tokenizer = BertTokenizer.from_pretrained(PRE_TRAINED_MODEL)
 
-def predict_category(resume):
+def indo_predict_category(resume):
     is_success = False
     try:
         # Tokenize the input resume text
