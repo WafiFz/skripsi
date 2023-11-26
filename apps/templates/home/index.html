@@ -43,7 +43,7 @@
           </div>
         </div>
         <div class="text-center">
-          <button type="button" class="btn bg-gradient-primary w-auto me-2">Unggah</button>
+          <button type="button" id="submit-button" class="btn bg-gradient-primary w-auto me-2">Unggah</button>
         </div>
       </div>
     </div>
@@ -54,20 +54,20 @@
 <div class="modal fade" id="modal-notification" tabindex="-1" role="dialog" aria-labelledby="modal-notification" aria-hidden="true">
   <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
     <div class="modal-content">
-      <!-- <div class="modal-header border-0">
-        <h6 class="modal-title" id="modal-title-notification">CV Belum diunggah</h6>
+      <div class="modal-header border-0">
+        <h6 class="modal-title" id="modal-title-notification"></h6>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">×</span>
+          <span aria-hidden="true" class="text-primary">×</span>
         </button>
-      </div> -->
+      </div>
       <div class="modal-body border-0">
         <div class="py-3 text-center">
           <i class="ni ni-bell-55 ni-3x"></i>
-          <h4 class="text-gradient text-danger mt-4">CV belum diunggah!</h4>
+          <h4 class="text-gradient text-danger mt-4" id="modal-description"></h4>
         </div>
       </div>
       <div class="modal-footer border-0">
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok, Mengerti</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
       </div>
     </div>
   </div>
@@ -81,12 +81,16 @@
   <script src="/static/assets/js/soft-design-system.min.js?v=1.0.1" type="text/javascript"></script>
   <script type="text/javascript">
     $(document).ready(function () {
-      $('button[type="button"]').click(function () {
+      $('#submit-button').click(function () {
         var fileInput = $("#formFile")[0].files[0];
 
         if (fileInput) {
           var formData = new FormData();
           formData.append("file", fileInput);
+
+          $("#modal-title-notification").text("Sedang memproses...");
+          $("#modal-description").html('<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>');
+          $("#modal-notification").modal("show");
 
           $.ajax({
             url: "",
@@ -96,14 +100,22 @@
             contentType: false,
             success: function (response) {
               console.log(response);
+              $("#modal-title-notification").text("Prediksi Berhasil");
+              $("#modal-description").text(response.output);
+              $("#modal-notification").modal("show");
             },
             error: function (error) {
-              console.error("ErrorNYA INI:", error);
+              console.error("Error NYA INI:", error.responseJSON);
+              $("#modal-title-notification").text("Prediksi Gagal");
+              $("#modal-description").text(error.responseJSON.output);
+              $("#modal-notification").modal("show");
             },
           });
         } else {
           // File tidak dipilih
           console.error("Pilih file untuk diunggah.");
+          $("#modal-title-notification").text("Prediksi Gagal");
+          $("#modal-description").text("Pilih file untuk diunggah.");
           $("#modal-notification").modal("show");
         }
       });
