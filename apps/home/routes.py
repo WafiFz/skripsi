@@ -18,6 +18,7 @@ def index():
 def index_post():
     try:
         file = request.files['file']
+        is_indonesia = request.form['is_indonesia'] == 'true'
 
         # Check if the file is present
         if 'file' not in request.files or file.filename == '':
@@ -35,12 +36,14 @@ def index_post():
             raise ValueError('Empty file content. Please upload a non-empty PDF file.')
 
         # Predict
-        success, output, probability = indo_predict_category(text)
+        success, output, probability =  ( indo_predict_category(text) if is_indonesia 
+                                          else predict_category(text)
+                                        )
         
         if not success:
             raise ValueError(output)
         
-        return jsonify({'success': True, 'output': output})
+        return jsonify({'success': True, 'output': output, 'probability': probability, 'text' : text})
         # return jsonify({'success': True, 'output': f'Hasil:  {str(output)}\n Probabilitas:  {str(probability)}'})
     except Exception as e:
         return jsonify({'success': False, 'output': str(e)}), 500
