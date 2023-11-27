@@ -38,12 +38,27 @@
       <div class="col-lg-9 z-index-2 border-radius-xl mt-n10 mx-auto py-3 blur shadow-blur">
         <div class="row">
           <div class="mb-3">
-            <label for="formFile" class="form-label">Unggah CV</label>
+            <label for="formFile" class="form-label">Upload CV</label>
             <input class="form-control" type="file" id="formFile" />
           </div>
         </div>
+
+        <div class="container py-3 mb-3">
+          <div class="d-flex justify-content-center align-items-center">
+            <div>
+              <div class="form-check form-switch mb-0">
+                <input class="form-check-input" type="checkbox" id="is_indonesia">
+              </div>
+            </div>
+            <div class="ms-4">
+              <span class="text-dark font-weight-bold d-block text-sm">Analysis in indonesian language</span>
+              <span class="text-xs d-block" id="is_indonesia_status">OFF</span>
+            </div>
+          </div>
+        </div>
+
         <div class="text-center">
-          <button type="button" id="submit-button" class="btn bg-gradient-primary w-auto me-2">Unggah</button>
+          <button type="button" id="submit-button" class="btn bg-gradient-primary w-auto me-2">Upload</button>
         </div>
       </div>
     </div>
@@ -83,10 +98,12 @@
     $(document).ready(function () {
       $('#submit-button').click(function () {
         var fileInput = $("#formFile")[0].files[0];
+        var isIndonesia = $("#is_indonesia").prop("checked");
 
         if (fileInput) {
           var formData = new FormData();
           formData.append("file", fileInput);
+          formData.append("is_indonesia", isIndonesia);
 
           $("#modal-title-notification").text("Sedang memproses...");
           $("#modal-description").html('<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>');
@@ -119,8 +136,16 @@
           $("#modal-notification").modal("show");
         }
       });
+
+      // Handle change event pada checkbox is_indonesia
+      $("#is_indonesia").change(function () {
+        var isIndonesia = $(this).prop("checked");
+        var statusText = isIndonesia ? "ON" : "OFF";
+        $("#is_indonesia_status").text(statusText);
+      });
     });
   </script>
+
 
   {% endblock javascripts %}
 </div>
