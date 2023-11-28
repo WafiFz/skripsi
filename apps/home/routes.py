@@ -8,6 +8,7 @@ import torch
 from transformers import BertTokenizer
 from .BERTClass import predict_category
 from .IndoBERTClass import indo_predict_category
+from .DataPreprocessing import text_preprocessing
 
 @blueprint.route('/')
 def index():
@@ -34,6 +35,9 @@ def index_post():
         # Check if the file content is empty
         if not text.strip():
             raise ValueError('Empty file content. Please upload a non-empty PDF file.')
+
+        text = text_preprocessing(text, is_indonesia)
+        # return jsonify({'success': True, 'output': 'test_output', 'probability': 0.7877, 'text' : text})
 
         # Predict
         success, output, probability =  ( indo_predict_category(text) if is_indonesia 
