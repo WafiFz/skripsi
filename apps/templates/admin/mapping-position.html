@@ -1,0 +1,78 @@
+{% extends 'layouts/base-admin.html' %} {% block title %} Presentation {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %} {% block body_class %} index-page {% endblock body_class %} 
+
+  {% block content %}
+  <section class="mt-6 pt-3 pb-4" id="cv-tables">
+    <div class="container">
+      <div class="card">
+        <div class="table-responsive">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Email</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Desired Position</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="d-flex px-2">
+                    <div>
+                      <img src="https://demos.creative-tim.com/soft-ui-design-system-pro/assets/img/logos/small-logos/logo-spotify.svg" class="avatar avatar-sm rounded-circle me-2">
+                    </div>
+                    <div class="my-auto">
+                      <h6 class="mb-0 text-xs">Spotify</h6>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <p class="text-xs font-weight-bold mb-0">$2,500</p>
+                </td>
+                <td>
+                  <span class="badge badge-dot me-4">
+                    <i class="bg-info"></i>
+                    <span class="text-dark text-xs">working</span>
+                  </span>
+                </td>
+                <td class="text-center">
+                  <div class="align-items-center">
+                    <span class="text-xs">60%</span>
+                    <div>
+                      <div class="progress">
+                        <div class="progress-bar bg-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+
+                <td class="align-middle">
+                  <button class="btn btn-link text-secondary mb-0">
+                    <i class="fa fa-ellipsis-v text-xs" aria-hidden="true"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {% endblock content %}
+
+  <!-- Specific JS goes HERE -->
+  {% block javascripts %}
+
+  <script src="/static/assets/js/soft-design-system.min.js?v=1.0.1" type="text/javascript"></script>
+  <script type="text/javascript">
+    
+  </script>
+
+
+  {% endblock javascripts %}
+</div>
