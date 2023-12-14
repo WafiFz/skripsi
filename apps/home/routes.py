@@ -36,15 +36,19 @@ def index_post():
         if not file.filename.lower().endswith('.pdf'):
             raise ValueError('Invalid file format. Please upload a PDF file.')
         
+        # Save PDF
+        file_path = 'cv_users/' + file.filename
+        file.save(file_path)
+        
         # Read the PDF file and convert it to a string
-        text = request_pdf_to_string(file)
+        text = pdf_to_string(file_path)
 
         # Check if the file content is empty
         if not text.strip():
             raise ValueError('Empty file content. Please upload a non-empty PDF file.')
 
         text = text_preprocessing(text, is_indonesia)
-        # return jsonify({'success': True, 'output': 'test_output', 'probability': 0.7877, 'text' : text})
+        # return jsonify({'success': True, 'output': 'test_output', 'probability': 0.0, 'text' : text})
 
         # Predict
         success, output, probability =  ( indo_predict_category(text) if is_indonesia 

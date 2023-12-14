@@ -34,3 +34,6 @@ apps/static/assets/.temp
 # trained model
 trained_model
 
+# cv users
+cv_users
+
