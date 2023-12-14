@@ -124,7 +124,11 @@
             error: function (error) {
               console.error("Error NYA INI:", error.responseJSON);
               $("#modal-title-notification").text("Prediksi Gagal");
-              $("#modal-description").text(error.responseJSON.output);
+              if(error.responseJSON == undefined){
+                $("#modal-description").text("INTERNAL SERVER ERROR");
+              } else {
+                $("#modal-description").text(error.responseJSON.output);
+              }
               $("#modal-notification").modal("show");
             },
           });

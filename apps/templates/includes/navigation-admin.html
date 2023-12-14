@@ -11,19 +11,19 @@
     <div class="collapse navbar-collapse" id="navigation">
       <ul class="navbar-nav navbar-nav-hover mx-auto">
         <li class="nav-item px-3">
-          <a href="{{ url_for('home_blueprint.admin_prediction_result') }}" class="nav-link text-white opacity-8">
+          <a href="{{ url_for('home_blueprint.prediction_result') }}" class="nav-link text-white opacity-8">
             Prediction Results
           </a>
         </li>
 
         <li class="nav-item px-3">
-          <a href="{{ url_for('home_blueprint.admin_mapping_position') }}" class="nav-link text-white opacity-8">
+          <a href="{{ url_for('home_blueprint.mapping_position') }}" class="nav-link text-white opacity-8">
             Mapping Position
           </a>
         </li>
       </ul>
       <ul class="navbar-nav ms-auto">
-        <button class="btn bg-gradient-primary mb-0">Logout</button>
+        <a href="{{ url_for('authentication_blueprint.logout') }}" class="btn bg-gradient-primary mb-0">Logout</a>
       </ul>
     </div>
   </div>

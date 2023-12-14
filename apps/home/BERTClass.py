@@ -50,7 +50,7 @@ class BERTClass(torch.nn.Module):
 model = BERTClass()
 
 # Path to file model
-model_path = "trained_model/cv_model_v4.pth"
+model_path = "trained_model/cv_model_v5.pth"
 
 # Check is CUDA available
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -90,8 +90,8 @@ def predict_category(resume):
 
         max_value_probabilities = torch.max(probabilities).item()
 
-        if max_value_probabilities < 0.5:
-            raise ValueError("Probability less than 50%, the contents of the CV are not appropriate")
+        # if max_value_probabilities < 0.5:
+        #     raise ValueError("Probability less than 50%, the contents of the CV are not appropriate")
 
         # Get index class MAX probability
         predicted_index = np.argmax(probabilities, axis=1).item()

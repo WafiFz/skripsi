@@ -12,8 +12,15 @@ from .DataPreprocessing import text_preprocessing
 
 @blueprint.route('/')
 def index():
-
     return render_template('home/index.html', segment='index')
+
+@blueprint.route('/admin/prediction-result')
+def prediction_result():
+    return render_template('admin/prediction-result.html')
+
+@blueprint.route('/admin/mapping-position')
+def mapping_position():
+    return render_template('admin/mapping-position.html')
 
 @blueprint.route('/', methods=['POST'])
 def index_post():
