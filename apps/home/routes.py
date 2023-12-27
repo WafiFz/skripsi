@@ -1,3 +1,4 @@
+from apps import db
 from apps.home import blueprint
 from flask import jsonify, render_template, request
 from flask_login import login_required
@@ -6,6 +7,8 @@ import fitz
 from io import BytesIO
 import torch
 from transformers import BertTokenizer
+
+from apps.job_applicant.models import JobApplicants
 from .BERTClass import predict_category
 from .IndoBERTClass import indo_predict_category
 from .DataPreprocessing import text_preprocessing
@@ -39,6 +42,19 @@ def index_post():
         # Save PDF
         file_path = 'cv_users/' + file.filename
         file.save(file_path)
+
+        # Create Job Applicant entry
+        user_id =  2# retrieve user_id from your authentication mechanism
+        desired_job = request.form.get('desired_job', None)  # Assuming you have a field 'desired_job' in your form
+        
+        job_applicant = JobApplicants(
+            cv_path=file_path,
+            user_id=user_id,
+            desired_job=desired_job
+        )
+        
+        db.session.add(job_applicant)
+        db.session.commit()
         
         # Read the PDF file and convert it to a string
         text = pdf_to_string(file_path)
