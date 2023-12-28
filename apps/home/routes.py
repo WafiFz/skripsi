@@ -1,17 +1,12 @@
-from apps import db
-from apps.home import blueprint
 from flask import jsonify, render_template, request
 from flask_login import login_required
-from jinja2 import TemplateNotFound
-import fitz
-from io import BytesIO
-import torch
-from transformers import BertTokenizer
-
+from apps import db
+from apps.home import blueprint
 from apps.job_applicant.models import JobApplicants
-from .BERTClass import predict_category
-from .IndoBERTClass import indo_predict_category
-from .DataPreprocessing import text_preprocessing
+from apps.cv_analysis.util import pdf_to_string
+from apps.cv_analysis.BERTClass import predict_category
+from apps.cv_analysis.IndoBERTClass import indo_predict_category
+from apps.cv_analysis.DataPreprocessing import text_preprocessing
 
 @blueprint.route('/')
 def index():
@@ -78,35 +73,3 @@ def index_post():
         # return jsonify({'success': True, 'output': f'Hasil:  {str(output)}\n Probabilitas:  {str(probability)}'})
     except Exception as e:
         return jsonify({'success': False, 'output': str(e)}), 500
-
-def pdf_to_string(file):
-    # Gunakan PyMuPDF untuk membaca teks dari PDF
-    pdf_document = fitz.open(file)
-    text_content = ""
-
-    for page_num in range(pdf_document.page_count):
-        page = pdf_document[page_num]
-        text_content += page.get_text()
-
-    pdf_document.close()
-
-    return text_content
-
-def request_pdf_to_string(file):
-    try:
-        # Membaca file PDF dari respons permintaan
-        pdf_bytes = BytesIO(file.read())
-        
-        # Menggunakan PyMuPDF untuk membaca teks dari PDF
-        pdf_document = fitz.open(stream=pdf_bytes, filetype="pdf")
-        text_content = ""
-
-        for page_num in range(pdf_document.page_count):
-            page = pdf_document[page_num]
-            text_content += page.get_text()
-
-        pdf_document.close()
-
-        return text_content
-    except Exception as e:
-        return f'Error processing PDF: {str(e)}'

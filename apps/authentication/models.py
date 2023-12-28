@@ -19,8 +19,8 @@ class Users(db.Model, UserMixin):
     password = db.Column(db.LargeBinary)
     role = db.Column(db.String(64))
 
-    # Define the relationship with the job_applicants table
-    job_applications = db.relationship('JobApplicants', back_populates='user')
+    # Define the relationship table
+    job_applicant = db.relationship('JobApplicants', back_populates='user')
 
     def __init__(self, **kwargs):
         for property, value in kwargs.items():

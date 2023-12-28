@@ -14105,3 +14105,14 @@ pre[class*="language-"] {
   cursor: help; }
 
 /*# sourceMappingURL=soft-design-system.css.map */
+
+.drop-area {
+  border: 2px dashed #ccc;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+}
+
+#pdf-container {
+  margin-top: 20px;
+}
