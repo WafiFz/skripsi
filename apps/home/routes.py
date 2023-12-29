@@ -22,7 +22,9 @@ def prediction_result():
 
 @blueprint.route('/admin/mapping-position')
 def mapping_position():
-    return render_template('admin/mapping-position.html')
+    prediction_results = CvAnalysisResults.query.all()
+
+    return render_template('admin/mapping-position.html', prediction_results=prediction_results)
 
 @blueprint.route('/', methods=['POST'])
 @login_required
