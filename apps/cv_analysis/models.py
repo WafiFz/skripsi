@@ -9,7 +9,7 @@ class CvAnalysisResults(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     job_applicant_id = db.Column(db.Integer, db.ForeignKey('Job_applicants.id'), nullable=False)
     prediction_result = db.Column(db.String(255), nullable=False)
-    probability_result = db.Column(db.Integer, nullable=False)
+    probability_result = db.Column(db.Float, nullable=False)
     status = db.Column(db.String(255), nullable=False)
     analysis_at = db.Column(db.DateTime, default=datetime.utcnow)
 

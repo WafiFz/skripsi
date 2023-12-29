@@ -16,7 +16,9 @@ def index():
 
 @blueprint.route('/admin/prediction-result')
 def prediction_result():
-    return render_template('admin/prediction-result.html')
+    prediction_results = CvAnalysisResults.query.all()
+
+    return render_template('admin/prediction-result.html', prediction_results=prediction_results)
 
 @blueprint.route('/admin/mapping-position')
 def mapping_position():
@@ -76,10 +78,13 @@ def index_post():
         # Save prediction results to CvAnalysisResults table
         status = 'pass' if output == desired_job else 'fail'
 
+        # Round the probability value to four decimal places
+        rounded_probability = round(probability, 4)
+
         cv_analysis_result = CvAnalysisResults(
             job_applicant_id=job_applicant.id,
             prediction_result=output,
-            probability_result=probability,
+            probability_result=rounded_probability,
             status=status
         )
 
@@ -89,6 +94,6 @@ def index_post():
         if not success:
             raise ValueError(output)
         
-        return jsonify({'success': True, 'output': 'Your CV has been uploaded. Contact the admin at 089656377911 if you want to know the result.'})
+        return jsonify({'success': True, 'output': 'Your CV has been uploaded. Contact the admin at 089656377911 if you want to know the result.', 'probability': probability})
     except Exception as e:
         return jsonify({'success': False, 'output': str(e)}), 500
