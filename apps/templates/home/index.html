@@ -43,6 +43,39 @@
           </div>
         </div>
 
+        <div class="row">
+          <div class="mb-3">
+            <label for="desired_job" class="form-label">Desired Job</label>
+            <select class="form-select" aria-label="Default select example" id="desired_job" required>
+              <option value="None" selected>Choose Desired Job</option>
+              <option value="Accountant">Accountant</option>
+              <option value="Advocate">Advocate</option>
+              <option value="Agriculture">Agriculture</option>
+              <option value="Apparel">Apparel</option>
+              <option value="Arts">Arts</option>
+              <option value="Automobile">Automobile</option>
+              <option value="Aviation">Aviation</option>
+              <option value="Banking">Banking</option>
+              <option value="BPO (Business Process Outsourcing)">BPO (Business Process Outsourcing)</option>
+              <option value="Business-development">Business Development</option>
+              <option value="Chef">Chef</option>
+              <option value="Construction">Construction</option>
+              <option value="Consultant">Consultant</option>
+              <option value="Designer">Designer</option>
+              <option value="Digital-media">Digital Media</option>
+              <option value="Engineering">Engineering</option>
+              <option value="Finance">Finance</option>
+              <option value="Fitness">Fitness</option>
+              <option value="Healthcare">Healthcare</option>
+              <option value="Hr">Human Resources (HR)</option>
+              <option value="Information-technology">Information Technology</option>
+              <option value="Public-relations">Public Relations</option>
+              <option value="Sales">Sales</option>
+              <option value="Teacher">Teacher</option>
+            </select>
+          </div>
+        </div>
+
         <div class="container py-3 mb-3">
           <div class="d-flex justify-content-center align-items-center">
             <div>
@@ -99,13 +132,15 @@
       $('#submit-button').click(function () {
         var fileInput = $("#formFile")[0].files[0];
         var isIndonesia = $("#is_indonesia").prop("checked");
+        var desiredJob = $("#desired_job").val();
 
-        if (fileInput) {
+        if (fileInput && desiredJob != "None") {
           var formData = new FormData();
           formData.append("file", fileInput);
           formData.append("is_indonesia", isIndonesia);
+          formData.append("desired_job", desiredJob);
 
-          $("#modal-title-notification").text("Sedang memproses...");
+          $("#modal-title-notification").text("Loading...");
           $("#modal-description").html('<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>');
           $("#modal-notification").modal("show");
 
@@ -117,13 +152,13 @@
             contentType: false,
             success: function (response) {
               console.log(response);
-              $("#modal-title-notification").text("Prediksi Berhasil");
+              $("#modal-title-notification").text("Succeed");
               $("#modal-description").text(response.output);
               $("#modal-notification").modal("show");
             },
             error: function (error) {
               console.error("Error NYA INI:", error.responseJSON);
-              $("#modal-title-notification").text("Prediksi Gagal");
+              $("#modal-title-notification").text("Failed");
               if(error.responseJSON == undefined){
                 $("#modal-description").text("INTERNAL SERVER ERROR");
               } else {
@@ -133,10 +168,8 @@
             },
           });
         } else {
-          // File tidak dipilih
-          console.error("Pilih file untuk diunggah.");
-          $("#modal-title-notification").text("Prediksi Gagal");
-          $("#modal-description").text("Pilih file untuk diunggah.");
+          $("#modal-title-notification").text("Failed");
+          $("#modal-description").text("Choose file & desired job.");
           $("#modal-notification").modal("show");
         }
       });

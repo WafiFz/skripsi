@@ -1,14 +1,16 @@
 from flask import jsonify, render_template, request
-from flask_login import login_required
+from flask_login import login_required, current_user
 from apps import db
 from apps.home import blueprint
 from apps.job_applicant.models import JobApplicants
+from apps.cv_analysis.models import CvAnalysisResults
 from apps.cv_analysis.util import pdf_to_string
 from apps.cv_analysis.BERTClass import predict_category
 from apps.cv_analysis.IndoBERTClass import indo_predict_category
 from apps.cv_analysis.DataPreprocessing import text_preprocessing
 
 @blueprint.route('/')
+@login_required
 def index():
     return render_template('home/index.html', segment='index')
 
@@ -21,6 +23,7 @@ def mapping_position():
     return render_template('admin/mapping-position.html')
 
 @blueprint.route('/', methods=['POST'])
+@login_required
 def index_post():
     try:
         file = request.files['file']
@@ -39,15 +42,21 @@ def index_post():
         file.save(file_path)
 
         # Create Job Applicant entry
-        user_id =  2# retrieve user_id from your authentication mechanism
-        desired_job = request.form.get('desired_job', None)  # Assuming you have a field 'desired_job' in your form
-        
+        user_id = current_user.id
+        desired_job = request.form.get('desired_job', None)
+
+        # Check if there is an existing JobApplicant entry for the same user_id
+        existing_job_applicant = JobApplicants.query.filter_by(user_id=user_id).first()
+
+        if existing_job_applicant:
+            raise ValueError('You have already uploaded your CV.')
+
         job_applicant = JobApplicants(
             cv_path=file_path,
             user_id=user_id,
             desired_job=desired_job
         )
-        
+
         db.session.add(job_applicant)
         db.session.commit()
         
@@ -59,17 +68,27 @@ def index_post():
             raise ValueError('Empty file content. Please upload a non-empty PDF file.')
 
         text = text_preprocessing(text, is_indonesia)
-        # return jsonify({'success': True, 'output': 'test_output', 'probability': 0.0, 'text' : text})
-
-        # Predict
-        success, output, probability =  ( indo_predict_category(text) if is_indonesia 
-                                          else predict_category(text)
-                                        )
         
+        # Predict
+        success, output, probability = (indo_predict_category(text) if is_indonesia 
+                                        else predict_category(text))
+
+        # Save prediction results to CvAnalysisResults table
+        status = 'pass' if output == desired_job else 'fail'
+
+        cv_analysis_result = CvAnalysisResults(
+            job_applicant_id=job_applicant.id,
+            prediction_result=output,
+            probability_result=probability,
+            status=status
+        )
+
+        db.session.add(cv_analysis_result)
+        db.session.commit()
+
         if not success:
             raise ValueError(output)
         
-        return jsonify({'success': True, 'output': output, 'probability': probability, 'text' : text})
-        # return jsonify({'success': True, 'output': f'Hasil:  {str(output)}\n Probabilitas:  {str(probability)}'})
+        return jsonify({'success': True, 'output': 'Your CV has been uploaded. Contact the admin at 089656377911 if you want to know the result.'})
     except Exception as e:
         return jsonify({'success': False, 'output': str(e)}), 500
