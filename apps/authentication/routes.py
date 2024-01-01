@@ -30,6 +30,9 @@ def is_admin(string):
 
     return True if match else False
 
+def role_admin(role):
+    return role == 'admin'
+
 @blueprint.route('/login', methods=['GET', 'POST'])
 def login():
     login_form = LoginForm(request.form)
