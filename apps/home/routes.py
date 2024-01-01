@@ -2,6 +2,7 @@ from flask import jsonify, render_template, request
 from flask_login import login_required, current_user
 from apps import db
 from apps.home import blueprint
+from apps.authentication.routes import role_admin
 from apps.job_applicant.models import JobApplicants
 from apps.cv_analysis.models import CvAnalysisResults
 from apps.cv_analysis.util import pdf_to_string
@@ -15,16 +16,37 @@ def index():
     return render_template('home/index.html', segment='index')
 
 @blueprint.route('/admin/prediction-result')
+@login_required
 def prediction_result():
+    is_admin = role_admin(current_user.role)
+    if not is_admin:
+        return render_template('home/index.html', segment='index')
+    
     prediction_results = CvAnalysisResults.query.all()
 
     return render_template('admin/prediction-result.html', prediction_results=prediction_results)
 
 @blueprint.route('/admin/mapping-position')
+@login_required
 def mapping_position():
+    is_admin = role_admin(current_user.role)
+    if not is_admin:
+        return render_template('home/index.html', segment='index')
+    
     prediction_results = CvAnalysisResults.query.all()
 
     return render_template('admin/mapping-position.html', prediction_results=prediction_results)
+
+@blueprint.route('/admin/cv-preview/<int:job_applicant_id>')
+@login_required
+def cv_preview(job_applicant_id):
+    is_admin = role_admin(current_user.role)
+    if not is_admin:
+        return render_template('home/index.html', segment='index')
+    
+    job_applicant = JobApplicants.query.get(job_applicant_id)  
+
+    return render_template('admin/cv-preview.html', job_applicant=job_applicant)
 
 @blueprint.route('/', methods=['POST'])
 @login_required
@@ -42,7 +64,7 @@ def index_post():
             raise ValueError('Invalid file format. Please upload a PDF file.')
         
         # Save PDF
-        file_path = 'cv_users/' + file.filename
+        file_path = 'apps/static/cv_users/' + file.filename
         file.save(file_path)
 
         # Create Job Applicant entry
@@ -56,7 +78,7 @@ def index_post():
             raise ValueError('You have already uploaded your CV.')
 
         job_applicant = JobApplicants(
-            cv_path=file_path,
+            cv_path=file.filename,
             user_id=user_id,
             desired_job=desired_job
         )

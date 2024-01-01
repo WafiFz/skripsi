@@ -3,7 +3,7 @@
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}{% endblock stylesheets %} {% block body_class %} index-page {% endblock body_class %} 
 
-  {% block content %}
+{% block content %}
   <section class="mt-6 pt-3 pb-4" id="cv-tables">
     <div class="container">
       <div class="card">
@@ -44,9 +44,7 @@
                   </td>
 
                   <td class="align-middle">
-                    <button class="btn btn-link text-secondary mb-0">
-                      <i class="fa fa-ellipsis-v text-xs" aria-hidden="true"></i>
-                    </button>
+                    <a role="button" href="{{  url_for('home_blueprint.cv_preview', job_applicant_id=result.job_applicant.id) }}" target="_blank" class="btn bg-gradient-primary">Go To CV</a>
                   </td>
                 </tr>
               {% endfor %}
@@ -57,16 +55,15 @@
     </div>
   </section>
 
-  {% endblock content %}
+{% endblock content %}
 
-  <!-- Specific JS goes HERE -->
-  {% block javascripts %}
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
 
-  <script src="/static/assets/js/soft-design-system.min.js?v=1.0.1" type="text/javascript"></script>
-  <script type="text/javascript">
-    
-  </script>
+<script src="/static/assets/js/soft-design-system.min.js?v=1.0.1" type="text/javascript"></script>
+<script type="text/javascript">
+  
+</script>
 
 
-  {% endblock javascripts %}
-</div>
+{% endblock javascripts %}

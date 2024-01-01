@@ -1,0 +1,44 @@
+{% extends 'layouts/base-admin.html' %} {% block title %} Presentation {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .full-page-preview {
+        height: 100vh;
+        width: 100%;
+    }
+
+    .full-page-preview embed {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+{% endblock stylesheets %} {% block body_class %} index-page {% endblock body_class %} 
+
+{% block content %}
+
+    <div class="full-page-preview">
+        <embed src="{{ '/static/cv_users/' + job_applicant.cv_path }}" type="application/pdf" width="100%" height="100%">
+    </div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+
+<script src="/static/assets/js/soft-design-system.min.js?v=1.0.1" type="text/javascript"></script>
+<script type="text/javascript">
+  
+</script>
+
+
+{% endblock javascripts %}
