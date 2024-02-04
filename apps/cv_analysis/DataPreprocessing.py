@@ -1,7 +1,7 @@
 import re
 from collections import Counter
-import nltk
-from nltk.corpus import stopwords
+# import nltk
+# from nltk.corpus import stopwords
 
 # nltk.download('stopwords')
 # stop_english = stopwords.words('english')

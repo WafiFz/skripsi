@@ -13,9 +13,9 @@ flask-restx==0.5.1
 python-dotenv==0.19.2
 Flask-Minify==0.37
 pymupdf==1.22.5
-torch
-transformers
-numpy
+torch==2.1.1
+transformers==4.35.2
+numpy==1.26.2
 
-flask_mysqldb
-# psycopg2-binary
+flask_mysqldb==2.0.0
+# psycopg2-binary
