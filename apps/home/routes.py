@@ -6,8 +6,8 @@ from apps.authentication.routes import role_admin
 from apps.job_applicant.models import JobApplicants
 from apps.cv_analysis.models import CvAnalysisResults
 from apps.cv_analysis.util import pdf_to_string
-from apps.cv_analysis.BERTClass import predict_category
-from apps.cv_analysis.IndoBERTClass import indo_predict_category
+from apps.cv_analysis.bert.english_cv_predict import english_predict_category
+from apps.cv_analysis.bert.indonesian_cv_predict import indo_predict_category
 from apps.cv_analysis.DataPreprocessing import text_preprocessing
 import os
 
@@ -65,7 +65,7 @@ def index_post():
             raise ValueError('Invalid file format. Please upload a PDF file.')
 
         save_folder='apps/static/cv_users'
-        
+
         # Ensure directory exists or create if not
         if not os.path.exists(save_folder):
             os.makedirs(save_folder)
@@ -73,7 +73,6 @@ def index_post():
         # Save PDF
         file_path = os.path.join(save_folder, file.filename)
         file.save(file_path)
-        return file_path
 
         # Create Job Applicant entry
         user_id = current_user.id
@@ -105,7 +104,7 @@ def index_post():
         
         # Predict
         success, output, probability = (indo_predict_category(text) if is_indonesia 
-                                        else predict_category(text))
+                                        else english_predict_category(text))
 
         # Save prediction results to CvAnalysisResults table
         status = 'pass' if output == desired_job else 'fail'

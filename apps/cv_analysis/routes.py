@@ -3,8 +3,8 @@ from apps.cv_analysis import blueprint
 from apps.cv_analysis.models import CvAnalysisResults
 from apps.cv_analysis.util import request_pdf_to_string
 from apps.cv_analysis.DataPreprocessing import text_preprocessing
-from apps.cv_analysis.BERTClass import predict_category
-from apps.cv_analysis.IndoBERTClass import indo_predict_category
+from apps.cv_analysis.bert.english_cv_predict import english_predict_category
+from apps.cv_analysis.bert.indonesian_cv_predict import indo_predict_category
 from apps.cv_analysis.DataPreprocessing import text_preprocessing
 
 @blueprint.route('/quick-cv-prediction')
@@ -37,7 +37,7 @@ def quick_cv_prediction_post():
 
         # Predict
         success, output, probability =  ( indo_predict_category(text) if is_indonesia 
-                                          else predict_category(text)
+                                          else english_predict_category(text)
                                         )
         
         if not success:
