@@ -3,6 +3,8 @@ import transformers
 import torch
 from transformers import BertTokenizer
 import numpy as np
+import requests
+import os
 
 class_labels = [
     'Accountant', 
@@ -50,7 +52,31 @@ class BERTClass(torch.nn.Module):
 model = BERTClass()
 
 # Path to file model
-model_path = "trained_model/cv_model_v5.pth"
+
+url_model = "https://wasteless.my.id/cv_model_v5.pth"
+local_folder = "trained_model_online"
+
+if not os.path.exists(local_folder):
+    os.makedirs(local_folder)
+
+# Mendapatkan nama file dari URL
+file_name = os.path.join(local_folder, "cv_model_v5.pth")
+
+# Memeriksa apakah file sudah ada
+if not os.path.exists(file_name):
+    # Mengunduh file dari URL
+    response = requests.get(url_model)
+
+    # Menyimpan file ke folder lokal
+    with open(file_name, 'wb') as file:
+        file.write(response.content)
+
+    print(f"Model berhasil diunduh dan disimpan di: {file_name}")
+else:
+    print(f"File model.pth sudah ada di: {file_name}")
+
+# Set the model path
+model_path = file_name
 
 # Check is CUDA available
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')

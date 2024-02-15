@@ -9,6 +9,7 @@ from apps.cv_analysis.util import pdf_to_string
 from apps.cv_analysis.BERTClass import predict_category
 from apps.cv_analysis.IndoBERTClass import indo_predict_category
 from apps.cv_analysis.DataPreprocessing import text_preprocessing
+import os
 
 @blueprint.route('/')
 @login_required
@@ -62,10 +63,17 @@ def index_post():
         # Check if the file has a PDF extension
         if not file.filename.lower().endswith('.pdf'):
             raise ValueError('Invalid file format. Please upload a PDF file.')
+
+        save_folder='apps/static/cv_users'
         
+        # Ensure directory exists or create if not
+        if not os.path.exists(save_folder):
+            os.makedirs(save_folder)
+
         # Save PDF
-        file_path = 'apps/static/cv_users/' + file.filename
+        file_path = os.path.join(save_folder, file.filename)
         file.save(file_path)
+        return file_path
 
         # Create Job Applicant entry
         user_id = current_user.id

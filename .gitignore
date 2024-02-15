@@ -33,6 +33,7 @@ apps/static/assets/.temp
 
 # trained model
 trained_model
+trained_model_online
 
 # cv users
 cv_users
