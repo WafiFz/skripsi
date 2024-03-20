@@ -37,14 +37,9 @@ class_labels = [
 IndoBERT = 'indolem/indobert-base-uncased'
 MODEL_PRE_TRAINED = IndoBERT
 
-# MODEL_URL = 'https://cloud.wafi.web.id/cv_indo_model_v3.pth'
-# MODEL_FOLDER = 'trained_model_online'
-# MODEL_FILE = 'cv_indo_model_v3.pth'
-
-# For testing purpose
-MODEL_URL = 'https://cloud.wafi.web.id/cv_model_v5.pth'
+MODEL_URL = 'https://cloud.wafi.web.id/cv_indo_model_v3.pth'
 MODEL_FOLDER = 'trained_model_online'
-MODEL_FILE = 'cv_model_v5.pth'
+MODEL_FILE = 'cv_indo_model_v3.pth'
 
 # Set the model path
 model_path = download_model(MODEL_FOLDER, MODEL_FILE, MODEL_URL)
