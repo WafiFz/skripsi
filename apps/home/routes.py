@@ -16,6 +16,17 @@ import os
 def index():
     return render_template('home/index.html', segment='index')
 
+@blueprint.route('/admin')
+@login_required
+def dashboard():
+    is_admin = role_admin(current_user.role)
+    if not is_admin:
+        return render_template('home/index.html', segment='index')
+    
+    prediction_results = CvAnalysisResults.query.all()
+
+    return render_template('admin/index.html', prediction_results=prediction_results)
+
 @blueprint.route('/admin/prediction-result')
 @login_required
 def prediction_result():

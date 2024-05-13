@@ -46,7 +46,7 @@ def login():
             login_user(user)
 
             if user.role == 'admin':
-                return redirect(url_for('home_blueprint.prediction_result'))
+                return redirect(url_for('home_blueprint.dashboard'))
 
             return redirect(url_for('home_blueprint.index'))
 
@@ -91,7 +91,7 @@ def register():
         user = Users(**request.form)
         if is_admin(email):
             user.role = 'admin'
-            redirect_url = 'home_blueprint.prediction_result'
+            redirect_url = 'home_blueprint.dashboard'
         db.session.add(user)
         db.session.commit()
         login_user(user)

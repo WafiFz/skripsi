@@ -1,0 +1,80 @@
+{% extends 'layouts/base-admin.html' %} {% block title %} Presentation {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %} {% block body_class %} index-page {% endblock body_class %} 
+
+{% block content %}
+  <section class="mt-6 pt-3 pb-4" id="cv-tables">
+    <div class="container">
+      <div class="card">
+        <div class="table-responsive">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Email</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Desired Position</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">CV Classification</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Status</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Confidence</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for result in prediction_results %}
+                {% set probability_percentage = (result.probability_result * 100)|round(2) %}
+                <tr>
+                  <td>
+                    <span class="text-dark text-xs">{{ result.job_applicant.user.username }}</span>
+                  </td>
+                  <td>
+                    <span class="text-xs font-weight-bold">{{ result.job_applicant.user.email }}</span>
+                  </td>
+                  <td>
+                    <span class="text-dark text-xs font-weight-bold">{{ result.job_applicant.desired_job }}</span>
+                  </td>
+                  <td>
+                    <span class="text-dark text-xs font-weight-bold">{{ result.prediction_result }}</span>
+                  </td>
+                  <td>
+                    {% if result.status == 'pass' %}
+                      <span class="badge bg-gradient-success">pass</span>
+                    {% else %}
+                    <span class="badge bg-gradient-danger">fail</span>
+                    {% endif %}
+                  </td>
+                  <td class="text-center">
+                    <div class="align-items-center">
+                      <span class="text-xs">{{ probability_percentage }}%</span>
+                      <div>
+                        <div class="progress">
+                          <div class="progress-bar bg-info" role="progressbar" aria-valuenow="{{ probability_percentage }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ probability_percentage }}%;"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+
+                  <td class="align-middle">
+                    <a role="button" href="{{  url_for('home_blueprint.cv_preview', job_applicant_id=result.job_applicant.id) }}" target="_blank" class="btn bg-gradient-primary">Go To CV</a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+
+<script src="/static/assets/js/soft-design-system.min.js?v=1.0.1" type="text/javascript"></script>
+<script type="text/javascript">
+  
+</script>
+
+
+{% endblock javascripts %}
