@@ -1,4 +1,4 @@
-bind = '156.67.222.52:443'
+bind = '185.210.144.114:443'
 workers = 1
 accesslog = '-'
 loglevel = 'debug'
