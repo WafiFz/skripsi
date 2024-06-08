@@ -5,7 +5,7 @@ from apps.home import blueprint
 from apps.authentication.routes import role_admin
 from apps.job_applicant.models import JobApplicants
 from apps.cv_analysis.models import CvAnalysisResults
-from apps.cv_analysis.util import pdf_to_string
+from apps.cv_analysis.util import pdf_to_string, translate_label_to_indonesian
 from apps.cv_analysis.bert.english_cv_predict import english_predict_category
 from apps.cv_analysis.bert.indonesian_cv_predict import indo_predict_category
 from apps.cv_analysis.DataPreprocessing import text_preprocessing
@@ -89,12 +89,16 @@ def index_post():
         user_id = current_user.id
         desired_job = request.form.get('desired_job', None)
 
+        if(is_indonesia):
+            desired_job = translate_label_to_indonesian(desired_job)
+
         # Check if there is an existing JobApplicant entry for the same user_id
         existing_job_applicant = JobApplicants.query.filter_by(user_id=user_id).first()
 
         if existing_job_applicant:
             raise ValueError('You have already uploaded your CV.')
 
+        # Save application data to JobApplicants table
         job_applicant = JobApplicants(
             cv_path=file.filename,
             user_id=user_id,
@@ -136,6 +140,6 @@ def index_post():
         if not success:
             raise ValueError(output)
         
-        return jsonify({'success': True, 'output': 'Your CV has been uploaded. Contact the admin at 089656377911 if you want to know the result.', 'probability': probability})
+        return jsonify({'success': True, 'output': 'Your CV has been uploaded. Contact the admin if you want to know the result.'})
     except Exception as e:
         return jsonify({'success': False, 'output': str(e)}), 500

@@ -32,3 +32,33 @@ def request_pdf_to_string(file):
         return text_content
     except Exception as e:
         return f'Error processing PDF: {str(e)}'
+    
+def translate_label_to_indonesian(english_label):
+    translation_dict = {
+        'Accountant': 'Akuntan', 
+        'Advocate': 'Advokat', 
+        'Agriculture': 'Pertanian', 
+        'Apparel': 'Pakaian', 
+        'Arts': 'Seni', 
+        'Automobile': 'Otomotif', 
+        'Aviation': 'Penerbangan', 
+        'Banking': 'Perbankan', 
+        'BPO (Business Process Outsourcing)': 'BPO (Bisnis Proses Outsourcing)', 
+        'Business-development': 'Pengembangan Bisnis', 
+        'Chef': 'Koki', 
+        'Construction': 'Konstruksi', 
+        'Consultant': 'Konsultan', 
+        'Designer': 'Desainer', 
+        'Digital-media': 'Media Digital', 
+        'Engineering': 'Engineering',
+        'Finance': 'Keuangan', 
+        'Fitness': 'Kebugaran',
+        'Healthcare': 'Perawatan Kesehatan', 
+        'Hr': 'SDM (Sumber Daya Manusia)', 
+        'Information-technology': 'Teknologi Informasi', 
+        'Public-relations': 'Hubungan Masyarakat', 
+        'Sales': 'Sales',
+        'Teacher': 'Guru'
+    }
+    
+    return translation_dict.get(english_label, 'Label tidak ditemukan')
