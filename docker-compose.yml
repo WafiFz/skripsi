@@ -18,7 +18,7 @@ services:
       - "5085:5085"
     volumes:
       - ./nginx:/etc/nginx/conf.d
-      - ./ssl:/etc/nginx/ssl
+      - ./ssl:/etc/nginx/ssl:ro
     networks:
       - web_network
     depends_on: 
