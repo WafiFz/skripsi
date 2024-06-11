@@ -18,8 +18,8 @@ services:
       - "5085:5085"
     volumes:
       - ./nginx:/etc/nginx/conf.d
-      - /etc/letsencrypt/live/skripsi.wafi.web.id/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
-      - /etc/letsencrypt/live/skripsi.wafi.web.id/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
+      - /etc/letsencrypt/live/skripsi.wafi.web.id-0001/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
+      - /etc/letsencrypt/live/skripsi.wafi.web.id-0001/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
     networks:
       - web_network
     depends_on:
