@@ -1,4 +1,4 @@
-version: '4'
+version: '4.0'
 services:
   skripsi-wafi:
     container_name: skripsi_wafi
