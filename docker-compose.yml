@@ -3,8 +3,8 @@ services:
   appseed-app:
     container_name: appseed_app
     restart: always
-    env_file: .env
-    build: .
+    env_file:.env
+    build:.
     networks:
       - db_network
       - web_network
@@ -17,7 +17,8 @@ services:
       - "443:443"
       - "5085:5085"
     volumes:
-      - ./nginx:/etc/nginx/conf.d
+      -./nginx:/etc/nginx/conf.d
+      -./ssl:/etc/nginx/ssl
     networks:
       - web_network
     depends_on: 
@@ -27,4 +28,3 @@ networks:
     driver: bridge
   web_network:
     driver: bridge
- 
