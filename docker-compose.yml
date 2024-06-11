@@ -1,5 +1,4 @@
 version: '3.8'
-
 services:
   skripsi-wafi:
     container_name: skripsi_wafi
@@ -7,13 +6,8 @@ services:
     env_file: .env
     build: .
     networks:
-      db_network:
-        aliases:
-          - skripsi-wafi
-      web_network:
-        aliases:
-          - skripsi-wafi
-
+      - db_network
+      - web_network
   nginx:
     container_name: nginx
     restart: always
@@ -27,9 +21,7 @@ services:
       - /etc/letsencrypt/live/skripsi.wafi.web.id-0001/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
       - /etc/letsencrypt/live/skripsi.wafi.web.id-0001/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
     networks:
-      web_network:
-        aliases:
-          - nginx
+      - web_network
     depends_on:
       - skripsi-wafi
 networks:
