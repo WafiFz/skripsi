@@ -8,6 +8,17 @@ index-page {% endblock body_class %} {% block content %}
   <div class="container">
     <div class="card">
       <div class="table-responsive">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="mb-0">CV Tables</h5>
+          <div>
+            <span>Show applicants with status: </span>
+            <select id="status-filter" class="form-control">
+              <option value="">All</option>
+              <option value="pass">Pass</option>
+              <option value="fail">Fail</option>
+            </select>
+          </div>
+        </div>
         <table class="table align-items-center mb-0">
           <thead>
             <tr>
@@ -80,10 +91,10 @@ index-page {% endblock body_class %} {% block content %}
               <th></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="table-body">
             {% for result in prediction_results %} {% set probability_percentage
             = (result.probability_result * 100)|round(2) %}
-            <tr>
+            <tr data-status="{{ result.status }}">
               <td>
                 <span class="text-dark text-xs"
                   >{{ result.job_applicant.user.username }}</span
@@ -159,6 +170,18 @@ index-page {% endblock body_class %} {% block content %}
 <script type="text/javascript">
   $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
+  });
+
+  $(document).ready(function () {
+    $('#status-filter').on('change', function () {
+      var filter = $(this).val();
+      if (filter) {
+        $("#table-body tr").hide();
+        $("#table-body tr[data-status='" + filter + "']").show();
+      } else {
+        $("#table-body tr").show();
+      }
+    });
   });
 </script>
 
