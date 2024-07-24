@@ -122,7 +122,7 @@ def index_post():
                                         else english_predict_category(text))
 
         # Save prediction results to CvAnalysisResults table
-        status = 'pass' if output == desired_job else 'fail'
+        status = 'matched' if output == desired_job else 'mismatched'
 
         # Round the probability value to four decimal places
         rounded_probability = round(probability, 4)

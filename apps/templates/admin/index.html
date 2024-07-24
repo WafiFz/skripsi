@@ -13,9 +13,9 @@ index-page {% endblock body_class %} {% block content %}
           <div>
             <span>Show applicants with status: </span>
             <select id="status-filter" class="form-control">
-              <option value="">All</option>
-              <option value="pass">Pass</option>
-              <option value="fail">Fail</option>
+              <option value="">all</option>
+              <option value="matched">matched</option>
+              <option value="mismatched">mismatched</option>
             </select>
           </div>
         </div>
@@ -23,7 +23,7 @@ index-page {% endblock body_class %} {% block content %}
           <thead>
             <tr>
               <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                class="text-uppercase text-info text-xxs font-weight-bolder"
               >
                 Name
                 <i
@@ -34,7 +34,7 @@ index-page {% endblock body_class %} {% block content %}
                 ></i>
               </th>
               <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                class="text-uppercase text-info text-xxs font-weight-bolder ps-2"
               >
                 Email
                 <i
@@ -45,7 +45,7 @@ index-page {% endblock body_class %} {% block content %}
                 ></i>
               </th>
               <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                class="text-uppercase text-info text-xxs font-weight-bolder ps-2"
               >
                 Desired Position
                 <i
@@ -56,7 +56,7 @@ index-page {% endblock body_class %} {% block content %}
                 ></i>
               </th>
               <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                class="text-uppercase text-info text-xxs font-weight-bolder ps-2"
               >
                 CV Classification
                 <i
@@ -67,7 +67,7 @@ index-page {% endblock body_class %} {% block content %}
                 ></i>
               </th>
               <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                class="text-uppercase text-info text-xxs font-weight-bolder ps-2"
               >
                 Status
                 <i
@@ -78,7 +78,7 @@ index-page {% endblock body_class %} {% block content %}
                 ></i>
               </th>
               <th
-                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                class="text-uppercase text-info text-xxs font-weight-bolder ps-2"
               >
                 Confidence
                 <i
@@ -116,10 +116,10 @@ index-page {% endblock body_class %} {% block content %}
                 >
               </td>
               <td>
-                {% if result.status == 'pass' %}
-                <span class="badge bg-gradient-success">pass</span>
+                {% if result.status == 'matched' %}
+                <span class="badge bg-gradient-success">matched</span>
                 {% else %}
-                <span class="badge bg-gradient-danger">fail</span>
+                <span class="badge bg-gradient-danger">mismatched</span>
                 {% endif %}
               </td>
               <td class="text-center">
@@ -173,7 +173,7 @@ index-page {% endblock body_class %} {% block content %}
   });
 
   $(document).ready(function () {
-    $('#status-filter').on('change', function () {
+    $("#status-filter").on("change", function () {
       var filter = $(this).val();
       if (filter) {
         $("#table-body tr").hide();
